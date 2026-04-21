@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+
+*{
+    @apply xl:text-base lg:text-sm md:text-[8px] text-[4px]
+}
+
+button,
+a {
+    cursor: pointer;
+}
