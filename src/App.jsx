@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import pullBackground from "@/assets/pull.png";
 import pullBackground2 from "@/assets/pull2.png";
 import lowQualityPullBackground from "@/assets/low-quality-pull.png";
