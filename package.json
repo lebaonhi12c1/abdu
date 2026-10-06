@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "perf": "node scripts/measure-perf.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
@@ -35,6 +37,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "sharp": "^0.35.5",
     "vite": "^8.0.4"
   }
 }

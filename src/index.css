@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
+/* Thiết bị cảm ứng (không có hover): hiện sẵn các phần tử vốn chỉ hiện khi hover */
+@custom-variant touch (@media (hover: none));
 
-*{
-    @apply xl:text-base lg:text-sm md:text-[8px] text-[4px]
+/* Mobile dọc: scene cao bằng màn hình và kéo ngang */
+@custom-variant pan (@media (orientation: portrait) and (max-width: 767px));
+
+/* Thiết bị cảm ứng còn lại (tablet, điện thoại xoay ngang): scene vừa trọn màn hình 16:9 */
+@custom-variant fit {
+    @media (hover: none) and (orientation: landscape), (hover: none) and (min-width: 768px) {
+        @slot;
+    }
+}
+
+/* Chữ co giãn theo chiều rộng scene (@container trong App.jsx): 16px khi scene ≥ 1280px.
+   Đặt trong layer base để class text-* của Tailwind vẫn ghi đè được */
+@layer base {
+    body * {
+        font-size: clamp(11px, 1.25cqw, 16px);
+    }
 }
 
 button,

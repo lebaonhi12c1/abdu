@@ -128,24 +128,7 @@ const MusicPlayer = () => {
                 />
             </div>
             {showVolumePopup && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        backgroundColor: "rgba(0, 0, 0, 0.85)",
-                        color: "white",
-                        padding: "30px 50px",
-                        borderRadius: "16px",
-                        fontSize: "28px",
-                        fontWeight: "bold",
-                        boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
-                        zIndex: 1000,
-                        textAlign: "center",
-                        minWidth: "200px",
-                    }}
-                >
+                <div className="fixed top-1/2 left-1/2 -translate-1/2 z-1000 bg-black/85 text-white font-bold text-center rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] text-[clamp(18px,4vw,28px)] px-[clamp(24px,5vw,50px)] py-[clamp(16px,3vw,30px)] min-w-[min(200px,80vw)]">
                     Volume: {volume}%
                 </div>
             )}
@@ -156,7 +139,8 @@ const MusicPlayer = () => {
                         position={{ x: song.position.x, y: song.position.y }}
                         className={cn(
                             song.className,
-                            currentPlaying === song.videoId && "opacity-100",
+                            currentPlaying === song.videoId &&
+                                "opacity-100 touch:opacity-100",
                         )}
                         classLabel={song.classLabel}
                         label={song.title}
@@ -170,6 +154,8 @@ const MusicPlayer = () => {
                 className="w-[0.54244358%]"
                 labelVolume="volume -"
                 classNameVolume="right-full bottom-full rotate-[-15deg]"
+                // Hai nút sát nhau: vùng chạm của mỗi nút chỉ mở rộng ra phía ngoài
+                classNameHitArea="touch:before:-top-5 touch:before:-bottom-5 touch:before:-left-10 touch:before:-right-px"
                 handle={() => changeVolume(-10)}
             />
             <VolumeButton
@@ -177,6 +163,7 @@ const MusicPlayer = () => {
                 className="w-[0.54244358%]"
                 labelVolume="volume +"
                 classNameVolume="left-full bottom-[265%] rotate-[-15deg]"
+                classNameHitArea="touch:before:-top-5 touch:before:-bottom-5 touch:before:-left-px touch:before:-right-10"
                 handle={() => changeVolume(10)}
             />
         </>

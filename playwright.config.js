@@ -3,6 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = 4173;
 const isCI = !!process.env.CI;
 
+// e2e/responsive.spec.js chạy trên thiết bị cảm ứng, các spec còn lại chạy trên desktop
+const RESPONSIVE = /responsive\.spec\.js/;
+
 // https://playwright.dev/docs/test-configuration
 export default defineConfig({
     testDir: "./e2e",
@@ -19,7 +22,16 @@ export default defineConfig({
     projects: [
         {
             name: "chromium",
+            testIgnore: RESPONSIVE,
             use: { ...devices["Desktop Chrome"], viewport: { width: 1920, height: 1080 } },
+        },
+        { name: "iphone", testMatch: RESPONSIVE, use: { ...devices["iPhone 13"] } },
+        { name: "pixel", testMatch: RESPONSIVE, use: { ...devices["Pixel 7"] } },
+        { name: "ipad", testMatch: RESPONSIVE, use: { ...devices["iPad (gen 7)"] } },
+        {
+            name: "ipad-landscape",
+            testMatch: RESPONSIVE,
+            use: { ...devices["iPad (gen 7) landscape"] },
         },
     ],
     // CI chạy trên bản build production, local dùng dev server cho nhanh
