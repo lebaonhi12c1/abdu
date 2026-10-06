@@ -18,15 +18,31 @@ test("trang load không có lỗi JS", async ({ page }) => {
     expect(errors).toEqual([]);
 });
 
-test("ảnh nền 2560x1440 đã load", async ({ page }) => {
+test("ảnh nền AVIF/WebP 16:9, desktop 1920 tải bản ≥ 1920px", async ({ page }) => {
     await page.goto("/");
-    const bg = page.locator("#root img").nth(1);
+    const bg = page.getByTestId("bg");
     await expect(bg).toBeVisible();
-    const size = await bg.evaluate((img) => ({
+    await expect.poll(() => bg.evaluate((img) => img.complete)).toBe(true);
+    const info = await bg.evaluate((img) => ({
+        src: img.currentSrc,
         w: img.naturalWidth,
-        h: img.naturalHeight,
+        ratio: img.naturalWidth / img.naturalHeight,
     }));
-    expect(size).toEqual({ w: 2560, h: 1440 });
+    expect(info.src).toMatch(/.(avif|webp)$/);
+    expect(info.w).toBeGreaterThanOrEqual(1920);
+    expect(info.ratio).toBeCloseTo(16 / 9, 2);
+});
+
+test("desktop giữ nguyên: scene full chiều ngang, chữ 16px", async ({ page }) => {
+    await page.goto("/");
+    const scene = await page.getByTestId("scene").boundingBox();
+    expect(scene.x).toBe(0);
+    expect(scene.width).toBe(1920);
+    const fontSize = await page
+        .getByText("SOCIAL")
+        .evaluate((el) => getComputedStyle(el).fontSize);
+    expect(fontSize).toBe("16px");
+    await expect(page.getByText("swipe to explore")).toBeHidden();
 });
 
 test("link ngoài mở tab mới và có rel noopener", async ({ page }) => {
@@ -67,7 +83,7 @@ for (const width of [1280, 1920, 2560]) {
         await page.setViewportSize({ width, height: Math.round((width * 9) / 16) });
         await page.goto("/");
 
-        const bg = await page.locator("#root img").nth(1).boundingBox();
+        const bg = await page.getByTestId("scene").boundingBox();
         const phone = await page
             .locator("a[href='https://link.me/rozikcrypto']")
             .boundingBox();

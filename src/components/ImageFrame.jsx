@@ -23,10 +23,14 @@ const ImageFrame = ({
                 top: position.y,
             }}
         >
-            <img src={image} className={cn("w-full h-auto", classImage)} />
+            <img
+                src={image}
+                alt={labelButton}
+                className={cn("w-full h-auto", classImage)}
+            />
             <div
                 className={cn(
-                    "absolute opacity-0 group-hover:opacity-100 px-2 py-1 bg-black/50 text-white whitespace-nowrap",
+                    "absolute opacity-0 group-hover:opacity-100 touch:opacity-80 px-2 py-1 bg-black/50 text-white whitespace-nowrap",
                     classButton,
                 )}
             >
